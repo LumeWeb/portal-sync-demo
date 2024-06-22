@@ -1,6 +1,3 @@
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useState } from "react"
 import FileListViewer from "./FileListViewer.tsx"
 import "@fontsource-variable/jetbrains-mono"
 
@@ -1232,6 +1229,10 @@ const files = Object.values({
 })
 
 function App() {
+  // add the code to load the stuff here derrick, just past it inside to FileListViewer and it will handle
+  // all the search from the inside. Focus on doing the fetch thats all. It is expecting an Array of files,
+  // the files variable is just a placeholder for now and see im using Object.values to transform it into an
+  // array
   return (
     <div className="w-screen h-full min-h-screen p-4 mx-auto space-y-4 text-gray-200 bg-gray-950">
       <FileListViewer files={files} />
@@ -1240,7 +1241,3 @@ function App() {
 }
 
 export default App
-
-function loadDataFromNetwork(key: string) {
-  throw new Error("Function not implemented.")
-}
