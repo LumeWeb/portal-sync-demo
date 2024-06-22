@@ -7,9 +7,10 @@ import {
 import { Label } from "@radix-ui/react-label"
 import React, { useState } from "react"
 import { Input } from "./components/ui/input"
+import type { File } from "./data.ts"
 import { cn } from "./lib/utils"
 
-const FileList = ({ files }) => {
+const FileList = ({ files }: { files: File[] }) => {
   const [searchTerm, setSearchTerm] = useState("")
   const filteredFiles = files.filter((file) =>
     file.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -66,16 +67,35 @@ const FileList = ({ files }) => {
                 <span className="font-semibold text-gray-300">MIME Type:</span>{" "}
                 {file.mimeType}
               </p>
-              <p>
-                <span className="font-semibold text-gray-300">Slabs:</span>{" "}
-                {file.slabs.length}
-              </p>
-              <p>
-                <span className="font-semibold text-gray-300">
-                  Slab Shards:
-                </span>{" "}
-                {file.slabs[0].slab.shards.length}
-              </p>
+              <div className="p-4 mt-2 bg-gray-800/50">
+                <h4 className="mb-2 text-gray-300">
+                  Slabs: {file.slabs.length}
+                </h4>
+                <div className="grid grid-cols-10 gap-2">
+                  {file.slabs.map((slab, index) => {
+                    const opacity =
+                      slab.slab.health >= 0.75
+                        ? "1"
+                        : slab.slab.health >= 0.5
+                        ? "0.75"
+                        : slab.slab.health >= 0.25
+                        ? "0.5"
+                        : "0.25"
+                    return (
+                      <div
+                        key={slab.slab.key}
+                        className="flex items-center justify-center w-full bg-green-500 rounded aspect-square"
+                        style={{ opacity }}
+                        title={`Slab Key: ${slab.slab.key}`}
+                      >
+                        <span className="text-xs font-bold text-white">
+                          {slab.slab.shards.length} shards
+                        </span>
+                      </div>
+                    )
+                  })}
+                </div>
+              </div>
             </AccordionContent>
           </AccordionItem>
         ))}
