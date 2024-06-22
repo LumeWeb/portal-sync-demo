@@ -1,17 +1,44 @@
+import type React from "react"
+import { useState } from "react"
 import FileListViewer from "./FileListViewer.tsx"
 import { files } from "./data.ts"
 import "@fontsource-variable/jetbrains-mono"
+import { Input } from "./components/ui/input.tsx"
+import { Label } from "./components/ui/label.tsx"
 
-function App() {
-  // add the code to load the stuff here derrick, just past it inside to FileListViewer and it will handle
-  // all the search from the inside. Focus on doing the fetch thats all. It is expecting an Array of files,
-  // the files variable is just a placeholder for now and see im using Object.values to transform it into an
-  // array
+const App: React.FC = () => {
+  const [hash, setHash] = useState<string>("")
+  const [showFileList, setShowFileList] = useState<boolean>(false)
 
-  // Kudos! - @ditorodev
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    // Here you would typically fetch data based on the hash
+    // For now, we'll just set showFileList to true
+    setShowFileList(true)
+  }
+
   return (
     <div className="w-full h-full min-h-screen p-4 mx-auto space-y-4 text-gray-200 bg-gray-950">
-      <FileListViewer files={files} />
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-row items-end max-w-sm gap-5 p-5 bg-gray-900"
+      >
+        <div>
+          <Label>Enter Hash</Label>
+          <Input
+            type="text"
+            value={hash}
+            onChange={(e) => setHash(e.target.value)}
+            placeholder="Enter hash"
+          />
+        </div>
+        <button type="submit" className="h-10 px-4 py-2 rounded bg-emerald-500">
+          Submit
+        </button>
+      </form>
+      <div className="px-2">
+        {showFileList && <FileListViewer files={files} />}
+      </div>
     </div>
   )
 }

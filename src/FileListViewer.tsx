@@ -28,7 +28,7 @@ const FileList = ({ files }: { files: File[] }) => {
   return (
     <>
       <SearchComponent searchTerm={searchTerm} onSearchChange={handleSearch} />
-      <Accordion type="multiple" className="space-y-2">
+      <Accordion type="multiple" className="my-4 space-y-3">
         {filteredFiles.map((file, index) => (
           <AccordionItem
             key={file.key}
@@ -128,7 +128,6 @@ const SearchComponent = ({
         id="search"
         name="search"
         type="text"
-        placeholder="Enter search term"
         value={searchTerm}
         onChange={(e) => onSearchChange(e.target.value)}
       />
