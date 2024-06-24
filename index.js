@@ -31,11 +31,11 @@ const createWindow = () => {
 const handleFileOpen = async (event, id) => {
 	const core = store.get({ key: Buffer.from(id, "hex") });
 	const bee = new Hyperbee(core);
-	await bee.ready();
+    await bee.ready();
+    swarm.join(core.discoveryKey)
+    await swarm.flush();
 
 	const data = [];
-
-	const iter = bee.createRangeIterator();
 
 	for await (const { key, value } of bee.createReadStream()) {
 		if (typeof value === "string") {
