@@ -1,25 +1,14 @@
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger
-} from "@/components/ui/accordion"
-import { Label } from "@radix-ui/react-label"
-import React, { useState } from "react"
-import { Input } from "./components/ui/input"
-import type { File } from "./data.ts"
-import { cn } from "./lib/utils"
+import {Accordion, AccordionContent, AccordionItem, AccordionTrigger} from "@/components/ui/accordion"
+import {Label} from "@radix-ui/react-label"
+import {useState} from "react"
+import {Input} from "./components/ui/input"
+import {cn} from "./lib/utils"
 
-const FileList = ({ files }: { files: File[] }) => {
+const FileList = ({ files }: { files: any[] }) => {
   const [searchTerm, setSearchTerm] = useState("")
   const filteredFiles = files.filter((file) =>
-    file.name.toLowerCase().includes(searchTerm.toLowerCase())
+    file.key.toLowerCase().includes(searchTerm.toLowerCase()) || JSON.stringify(file.value).toLowerCase().includes(searchTerm.toLowerCase())
   )
-
-  const showErrorDialog = (message: string) => {
-    // @ts-ignore
-    window?.backend?.openDialog("showErrorBox", ["Error", message])
-  }
 
   const handleSearch = (searchTerm: string) => {
     setSearchTerm(searchTerm)
@@ -29,76 +18,81 @@ const FileList = ({ files }: { files: File[] }) => {
     <>
       <SearchComponent searchTerm={searchTerm} onSearchChange={handleSearch} />
       <Accordion type="multiple" className="my-4 space-y-3">
-        {filteredFiles.map((file, index) => (
-          <AccordionItem
-            key={file.key}
-            value={file.key}
-            className={cn(
-              index % 2 === 0 ? "bg-gray-700/20" : "bg-gray-900",
-              "border border-gray-800"
-            )}
-          >
-            <AccordionTrigger className="px-4 rounded-lg hover:bg-gray-900 hover:no-underline">
-              <div className="flex items-center w-full text-gray-200">
-                <div className="flex items-center w-full">
-                  <div
-                    className={`ml-2 mr-6 w-2 h-2 rounded-full ${getHealthColor(
-                      file.health
-                    )}`}
-                  />
-                  <span className="opacity-80">{formatDate(file.modTime)}</span>
-                  <span className="ml-10 text-gray-200">{file.name}</span>
-                </div>
-                <span className="w-24 mr-10 text-gray-400">
-                  {formatSize(file.size)}
-                </span>
-              </div>
-            </AccordionTrigger>
-            <AccordionContent className="px-4 py-2 text-gray-400">
-              <p>
-                <span className="font-semibold text-gray-300">eTag:</span>{" "}
-                {file.eTag}
-              </p>
-              <p>
-                <span className="font-semibold text-gray-300">Key:</span>{" "}
-                {file.key}
-              </p>
-              <p>
-                <span className="font-semibold text-gray-300">MIME Type:</span>{" "}
-                {file.mimeType}
-              </p>
-              <div className="p-4 mt-2 bg-gray-800/50">
-                <h4 className="mb-2 text-gray-300">
-                  Slabs: {file.slabs.length}
-                </h4>
-                <div className="grid grid-cols-10 gap-2">
-                  {file.slabs.map((slab, index) => {
-                    const opacity =
-                      slab.slab.health >= 0.75
-                        ? "1"
-                        : slab.slab.health >= 0.5
-                        ? "0.75"
-                        : slab.slab.health >= 0.25
-                        ? "0.5"
-                        : "0.25"
-                    return (
-                      <div
-                        key={slab.slab.key}
-                        className="flex items-center justify-center w-full bg-green-500 rounded aspect-square"
-                        style={{ opacity }}
-                        title={`Slab Key: ${slab.slab.key}`}
-                      >
-                        <span className="text-xs font-bold text-white">
-                          {slab.slab.shards.length} shards
-                        </span>
-                      </div>
-                    )
-                  })}
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
+        {filteredFiles.map((file, index) => {
+            file.value.health = file.value.slabs.reduce((acc: any, slab: { slab: { health: any } }) => {
+                return acc + slab.slab.health
+            }, 0) / file.value.slabs.length
+
+            return (
+                <AccordionItem
+                    key={file.key}
+                    value={file.key}
+                    className={cn(
+                        index % 2 === 0 ? "bg-gray-700/20" : "bg-gray-900",
+                        "border border-gray-800"
+                    )}
+                >
+                    <AccordionTrigger className="px-4 rounded-lg hover:bg-gray-900 hover:no-underline">
+                        <div className="flex items-center w-full text-gray-200">
+                            <div className="flex items-center w-full">
+                                <div
+                                    className={`ml-2 mr-6 w-2 h-2 rounded-full ${getHealthColor(
+                                        file.value.health
+                                    )}`}
+                                />
+                                <span className="ml-10 text-gray-200">{file.key}</span>
+                            </div>
+                            <span className="w-24 mr-10 text-gray-400">
+                      {formatSize(file.value.size)}
+                    </span>
+                        </div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-4 py-2 text-gray-400">
+                        <p>
+                            <span className="font-semibold text-gray-300">eTag:</span>{" "}
+                            {file.value.eTag}
+                        </p>
+                        <p>
+                            <span className="font-semibold text-gray-300">Key:</span>{" "}
+                            {file.value.key}
+                        </p>
+                        <p>
+                            <span className="font-semibold text-gray-300">MIME Type:</span>{" "}
+                            {file.value.mimeType}
+                        </p>
+                        <div className="p-4 mt-2 bg-gray-800/50">
+                            <h4 className="mb-2 text-gray-300">
+                                Slabs: {file.value.slabs.length}
+                            </h4>
+                            <div className="grid grid-cols-10 gap-2">
+                                {file.value.slabs.map((slab) => {
+                                    const opacity =
+                                        slab.slab.health >= 0.75
+                                            ? "1"
+                                            : slab.slab.health >= 0.5
+                                                ? "0.75"
+                                                : slab.slab.health >= 0.25
+                                                    ? "0.5"
+                                                    : "0.25"
+                                    return (
+                                        <div
+                                            key={slab.slab.key}
+                                            className="flex items-center justify-center w-full bg-green-500 rounded aspect-square"
+                                            style={{opacity}}
+                                            title={`Slab Key: ${slab.slab.key}`}
+                                        >
+                            <span className="text-xs font-bold text-white">
+                              {slab.slab.shards.length} shards
+                            </span>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    </AccordionContent>
+                </AccordionItem>
+            );
+        })}
       </Accordion>
     </>
   )
@@ -154,16 +148,4 @@ const formatSize = (size) => {
   }
 
   return `${formattedSize.toFixed(2)} ${units[index]}`
-}
-
-const formatDate = (dateString) => {
-  const date = new Date(dateString)
-  return new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "short",
-    day: "2-digit",
-    hour: "2-digit",
-    minute: "2-digit",
-    hour12: true
-  }).format(date)
 }
