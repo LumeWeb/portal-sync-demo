@@ -82,7 +82,7 @@ const FileList = ({ files }: { files: any[] }) => {
                                             title={`Slab Key: ${slab.slab.key}`}
                                         >
                             <span className="text-xs font-bold text-white">
-                              {slab.slab.shards?.length} shards
+                              {slab.slab.shards?.length ?? 0} shards
                             </span>
                                         </div>
                                     )
