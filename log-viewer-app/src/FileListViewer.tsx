@@ -65,7 +65,7 @@ const FileList = ({ files }: { files: any[] }) => {
                                 Slabs: {file.value.slabs.length}
                             </h4>
                             <div className="grid grid-cols-10 gap-2">
-                                {file.value.slabs.map((slab) => {
+                                {file.value.slabs?.map((slab) => {
                                     const opacity =
                                         slab.slab.health >= 0.75
                                             ? "1"
@@ -82,7 +82,7 @@ const FileList = ({ files }: { files: any[] }) => {
                                             title={`Slab Key: ${slab.slab.key}`}
                                         >
                             <span className="text-xs font-bold text-white">
-                              {slab.slab.shards.length} shards
+                              {slab.slab.shards?.length} shards
                             </span>
                                         </div>
                                     )
