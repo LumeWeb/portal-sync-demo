@@ -46,7 +46,7 @@ The Portal Sync Demo consists of three main components:
 
 1. Navigate to the `small` directory:
    ```
-   cd ../upload/small
+   cd ../milestones/upload/small
    ```
 
 2. Set up the Go modules for the small file upload application:
