@@ -36,15 +36,9 @@ The Portal Sync Demo consists of three main components:
    cd portal-sync-demo
    ```
 
-2. Set up the upload applications:
+2. Set up the log viewer application:
    ```
-   cd upload
-   go mod download
-   ```
-
-3. Set up the log viewer application:
-   ```
-   cd ../log-viewer-app
+   cd log-viewer-app
    pnpm install
    ```
 
@@ -52,45 +46,55 @@ The Portal Sync Demo consists of three main components:
 
 1. Navigate to the `small` directory:
    ```
-   cd small
+   cd ../upload/small
    ```
 
-2. Run the application:
+2. Set up the Go modules for the small file upload application:
+   ```
+   go mod download
+   ```
+
+3. Run the application:
    ```
    go run main.go
    ```
 
-3. The application will automatically generate a random account, create a 40MB random file, and upload it.
+4. The application will automatically generate a random account, create a 40MB random file, and upload it.
 
-4. Wait for the upload to complete. The application will display progress in the console.
+5. Wait for the upload to complete. The application will display progress in the console.
 
-5. No user input is required during this process.
+6. No user input is required during this process.
 
 ## Large File Upload Application
 
 1. Navigate to the `large` directory:
    ```
-   cd large
+   cd ../large
    ```
 
-2. Run the application:
+2. Set up the Go modules for the large file upload application:
+   ```
+   go mod download
+   ```
+
+3. Run the application:
    ```
    go run main.go
    ```
 
-3. This application uses the tus protocol for resumable uploads of large files.
+4. This application uses the tus protocol for resumable uploads of large files.
 
-4. The application will automatically generate a random account, create a large random file, and begin the upload process.
+5. The application will automatically generate a random account, create a large random file, and begin the upload process.
 
-5. The application will display progress in the console.
+6. The application will display progress in the console.
 
-6. No user input is required during this process.
+7. No user input is required during this process.
 
 ## Log Viewer Application
 
-1. Navigate to the `log-viewer-app` directory:
+1. Navigate back to the `log-viewer-app` directory:
    ```
-   cd ../log-viewer-app
+   cd ../../log-viewer-app
    ```
 
 2. Build and run the Electron app:
