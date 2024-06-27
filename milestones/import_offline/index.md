@@ -41,7 +41,7 @@ First, we need to start the seeder to keep the data online and accessible:
 
 4. Run the following command to start the forked version of `simple-seeder`:
    ```
-   npx @lumeweb/portal-sync-simple-seeder -b KEY -storage ../seed/corestore
+   npx @lumeweb/portal-sync-simple-seeder -b KEY --storage ../seed/corestore
    ```
    Replace `KEY` with the log key you copied.
 
