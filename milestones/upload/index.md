@@ -1,4 +1,4 @@
-# Complete Portal Sync Demo Guide
+# Portal Sync Demo Guide: Uploading
 
 This guide provides comprehensive instructions for using the Portal Sync Demo, including uploading both small and large files, and viewing the upload logs using the Electron-based log viewer application.
 
