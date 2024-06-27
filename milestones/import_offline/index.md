@@ -1,6 +1,6 @@
 # Portal Sync Demo Guide: Offline Import with Continuous Seeding
 
-This guide provides instructions for performing an "offline" import where the primary portal becomes unavailable, made possible by continuous seeding of the data. We'll use the `simple-seeder` package to keep the data online and the previously demonstrated import tool to perform the import.
+This guide provides instructions for performing an "offline" import where the primary portal becomes unavailable, made possible by continuous seeding of the data. We'll use the `@lumeweb/portal-sync-simple-seeder` package to keep the data online and the previously demonstrated import tool to perform the import.
 
 ## Table of Contents
 
@@ -14,11 +14,12 @@ This guide provides instructions for performing an "offline" import where the pr
 
 ## Prerequisites
 
-- Node.js and npm (for `simple-seeder`)
+- Node.js and npm (for `@lumeweb/portal-sync-simple-seeder`)
 - Go programming language (for the import tool)
 - File hashes for the files you want to import
 - Internet connection
 - Basic familiarity with command-line operations
+- The seed demo should have been previously run, creating the `../seed/corestore` directory
 
 ## Overview
 
@@ -38,9 +39,9 @@ First, we need to start the seeder to keep the data online and accessible:
 
 3. Copy the key value carefully. The key doesn't change, but be cautious to avoid copying errors.
 
-4. Run the following command to start `simple-seeder`:
+4. Run the following command to start the forked version of `simple-seeder`:
    ```
-   npx simple-seeder -b KEY
+   npx @lumeweb/portal-sync-simple-seeder -b KEY -storage ../seed/corestore
    ```
    Replace `KEY` with the log key you copied.
 
@@ -83,7 +84,7 @@ With the seeder running and keeping the data accessible, even though the primary
 
 ## Monitoring and Verification
 
-- For the seeding process, monitor the console output of `simple-seeder`. It should show connection status and activity related to serving the data.
+- For the seeding process, monitor the console output of `@lumeweb/portal-sync-simple-seeder`. It should show connection status and activity related to serving the data.
 - For the import process, watch the console output of the import tool for each file. It should indicate successful imports despite the primary portal being offline.
 - You can verify the imports in Renterd by navigating to:
   ```
@@ -97,6 +98,7 @@ With the seeder running and keeping the data accessible, even though the primary
     - Verify that you've copied the log key correctly.
     - Ensure Node.js and npm are up to date.
     - Check your firewall settings if you encounter connection issues.
+    - Make sure the `../seed/corestore` directory exists and contains the necessary data from the seed demo.
 
 - **Import Issues**:
     - Ensure you're using the correct file hashes.
@@ -107,6 +109,6 @@ With the seeder running and keeping the data accessible, even though the primary
     - Confirm your internet connection is stable.
     - If using a VPN, try disabling it temporarily.
 
-For persistent issues with the import tool or `simple-seeder`, refer to their respective project documentation or issue trackers.
+For persistent issues with the import tool or `@lumeweb/portal-sync-simple-seeder`, refer to their respective project documentation or issue trackers.
 
 Remember, this process demonstrates the resilience of the network. The continuous seeding ensures data availability, allowing imports to proceed even when the primary portal is down.
